@@ -108,8 +108,6 @@ PythonEvaluation::PythonEvaluation(PyObject * pyCallable)
 /* Virtual constructor */
 PythonEvaluation * PythonEvaluation::clone() const
 {
-  Py_XINCREF(pyObj_);
-  Py_XINCREF(pyBufferClass_);
   return new PythonEvaluation(*this);
 }
 
