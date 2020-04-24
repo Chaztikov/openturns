@@ -232,7 +232,8 @@ Point PythonEvaluation::operator() (const Point & inP) const
     PyTuple_SetItem(shapeTuple.get(), 0, convert< UnsignedInteger, _PyInt_ > (inP.getSize()));
 
     // Call openturns.memoryview.Buffer() to create a read-only buffer
-    ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get())));
+    ScopedPyObjectPointer bufferArgs(Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get()));
+    ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, bufferArgs.get()));
 
     // Pass this buffer to _exec function if it has been defined by user, otherwise call _exec_sample(Buffer.augment())[0]
     // If both pyObj_has_exec_ and pyObj_has_exec_sample_ are false, this is not a PythonFunction but a Function(OpenTURNSPythonFunction).
@@ -334,7 +335,8 @@ Sample PythonEvaluation::operator() (const Sample & inS) const
       PyTuple_SetItem(shapeTuple.get(), 1, convert< UnsignedInteger, _PyInt_ > (inDim));
 
       // Call openturns.memoryview.Buffer() to create a read-only buffer
-      ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get())));
+      ScopedPyObjectPointer bufferArgs(Py_BuildValue("OO", ptrTuple.get(), shapeTuple.get()));
+      ScopedPyObjectPointer readOnlyBufferObj(PyObject_CallObject(pyBufferClass_, bufferArgs.get()));
 
       // Pass this buffer to _exec_sample function if it has been defined by user, otherwise loop on Buffer on call _exec
       // If both pyObj_has_exec_ and pyObj_has_exec_sample_ are false, this is not a PythonFunction but a Function(OpenTURNSPythonFunction).
